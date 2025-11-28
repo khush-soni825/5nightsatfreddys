@@ -1,0 +1,261 @@
+:root {
+    --bg-color: #111;
+    --text-color: #eee;
+    --ui-color: #fff;
+    --alert-color: #d00;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: var(--text-color);
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#game-container {
+    position: relative;
+    width: 1024px;
+    height: 576px; /* 16:9 Aspect Ratio */
+    background-color: #222;
+    overflow: hidden;
+    border: 2px solid #333;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+
+/* Screens */
+.screen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+button {
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 10px 20px;
+    font-family: inherit;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #444;
+}
+
+/* Office View */
+#office-view {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    /* Placeholder color until image is generated */
+    background-color: #1a1a1a; 
+}
+
+#office-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    /* Will be set via JS with generated image */
+}
+
+/* Doors */
+.door {
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    background: #333;
+    z-index: 1;
+    transition: transform 0.2s ease-in-out;
+}
+
+#door-left {
+    left: 0;
+    transform: translateY(-100%); /* Open by default */
+    background: linear-gradient(to right, #111, #333);
+    border-right: 5px solid #000;
+}
+
+#door-right {
+    right: 0;
+    transform: translateY(-100%);
+    background: linear-gradient(to left, #111, #333);
+    border-left: 5px solid #000;
+}
+
+.door.closed {
+    transform: translateY(0);
+}
+
+/* Controls */
+.door-control {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.door-control.left {
+    left: 10px;
+}
+
+.door-control.right {
+    right: 10px;
+}
+
+.control-btn {
+    width: 80px;
+    height: 40px;
+    font-size: 12px;
+    border: 2px solid #555;
+}
+
+.control-btn.active {
+    background-color: #0f0;
+    color: #000;
+    box-shadow: 0 0 10px #0f0;
+}
+
+.control-btn#btn-door-left.active, .control-btn#btn-door-right.active {
+    background-color: #d00;
+    box-shadow: 0 0 10px #d00;
+}
+
+/* UI Layer */
+#ui-layer {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    font-size: 24px;
+    text-shadow: 2px 2px 0 #000;
+}
+
+#clock {
+    position: absolute;
+    top: -500px; /* Move to top right */
+    right: -900px;
+    width: 200px;
+    text-align: right;
+}
+
+#btn-camera-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 40px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #fff;
+}
+
+#btn-camera-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Camera Monitor */
+#camera-monitor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 20;
+    border: 10px solid #333;
+    box-sizing: border-box;
+}
+
+#camera-feed {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+#static-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjUiIG51bU9jdGF2ZXM9IjEiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAuMiIvPjwvc3ZnPg==');
+    opacity: 0.3;
+    pointer-events: none;
+    animation: static-anim 0.5s steps(5) infinite;
+}
+
+@keyframes static-anim {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-10px, 10px); }
+    40% { transform: translate(10px, -10px); }
+    60% { transform: translate(-5px, -5px); }
+    80% { transform: translate(5px, 5px); }
+    100% { transform: translate(0, 0); }
+}
+
+#map-overlay {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #fff;
+}
+
+.cam-btn {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    font-size: 10px;
+    padding: 0;
+}
+
+.cam-btn.active {
+    background: #0f0;
+    color: #000;
+}
+
+/* Jumpscare */
+#jumpscare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+}
